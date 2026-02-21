@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Jurisprudence of Conditionality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #1a0f0a;
+            background-image: url('https://i.postimg.cc/TPGbHvMj/Picsart-26-01-21-23-33-12-242.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #1a0f0a;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .dark-glass {
+            background-color: rgba(26, 15, 10, 0.75);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .nav-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            flex: 0 0 240px;
+            background-color: rgba(217, 197, 178, 0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+            border-bottom: 6px solid transparent;
+            margin: 0 0.75rem;
+        }
+
+        .nav-item.active {
+            border-bottom-color: #a35c27;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .report-view h2 { font-size: 2.25rem; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 2rem; color: #1a0f0a; font-weight: normal; }
+        .report-view h4 { font-weight: normal; text-transform: uppercase; letter-spacing: 0.15em; color: #4a2c1d; margin-top: 3.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(163, 92, 39, 0.25); padding-bottom: 0.5rem; }
+        .report-view hr { border: 0; border-top: 1px solid #a35c27; margin: 4rem 0; opacity: 0.2; }
+        
+        .image-overlay-container {
+            position: relative;
+            width: 100%;
+            border-radius: 2px;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .img-placeholder {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: rgba(255,255,255,0.02); }
+        th, td { border: 1px solid rgba(163, 92, 39, 0.2); padding: 1.25rem; text-align: left; font-size: 0.95rem; color: #1a0f0a; font-weight: normal; }
+        th { background: rgba(163, 92, 39, 0.05); text-transform: uppercase; color: #4a2c1d; letter-spacing: 0.05em; }
+
+        .slider-btn {
+            background-color: rgba(26, 15, 10, 0.6);
+            color: #d9c5b2;
+            width: 3rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 40;
+            font-size: 1.5rem;
+        }
+        .slider-btn:hover {
+            background-color: #a35c27;
+            color: white;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 3rem auto;
+            height: 350px;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden text-left">
+
+    <div class="flex flex-1 overflow-hidden relative flex-col">
+        
+        <main id="mainDisplay" class="flex-1 overflow-y-auto p-6 md:p-16 bg-transparent">
+            <div id="introView" class="max-w-4xl mx-auto mt-12 text-left glass-panel p-16 rounded-sm shadow-2xl">
+                <h2 class="text-5xl text-[#1a0f0a] mb-10 font-light leading-tight">An Analysis of Key Changes in American Law and Their Lasting Social and Economic Effects.</h2>
+                <div class="space-y-8 text-xl text-[#261a15] leading-relaxed">
+                    <p>The evolution of civil liberties and political agency in the United States is often portrayed as a straightforward journey toward universal equality. However, when we take a deeper dive into the historical and legal landscape stretching from the mid-seventeenth century to today, we uncover a far more intricate and fluctuating narrative shaped by conditionality. This concept reflects the fragile nature of rights, granted or withheld, often dictated by economic needs, entrenched racial hierarchies, and the whims of political priorities.</p>
+                    <p>By delving into these pivotal historical events and drawing connections to their present-day consequences, we can illuminate the intricate interplay of law, power, and social justice in the United States. Through this lens, it becomes starkly apparent that the journey toward genuine inclusivity remains incomplete. There is still an urgent need for vigilance in dismantling the systemic inequities that have lingered for centuries.</p>
+                </div>
+                <button onclick="loadSection(0)" class="mt-12 px-12 py-5 bg-[#a35c27] text-white rounded-sm shadow-2xl hover:bg-[#8c3a1a] transition uppercase tracking-widest text-sm">Start Investigation</button>
+            </div>
+        </main>
+
+        <div class="w-full h-56 dark-glass border-t border-[#a35c27]/10 flex-none relative flex items-center px-2">
+            <button class="slider-btn" onclick="scrollNav(-500)">&#10094;</button>
+            <nav id="navContainer" class="flex h-full items-center overflow-x-auto nav-scroll w-full px-4 py-4">
+            </nav>
+            <button class="slider-btn" onclick="scrollNav(500)">&#10095;</button>
+        </div>
+
+    </div>
+
+    <script>
+        const sections = [
+            {
+                id: "1648",
+                year: "1648",
+                title: "Margaret Brent",
+                img: "https://i.postimg.cc/hts90xXd/1-colonial-power-play.png",
+                summary: "Margaret Brent challenged the gendered barriers of political power in Maryland. As an unmarried landowner managing her own property, she saved the colony from insolvency and mutiny. Her denial of a vote established that female contribution does not inherently confer political agency.",
+                bio: "Brent was a prominent settler who arrived in 1638. She ensured soldiers were paid using the proprietor's assets to prevent collapse. Despite her success, she was forced to leave Maryland after her actions were condemned by Lord Baltimore.",
+                detailed: "Maryland faced financial collapse and soldier revolts in 1648. Named executrix with instructions to take all and pay all, Brent liquidated cattle to settle debts. She demanded a vote for herself and another as Lord Baltimore's attorney. The Assembly refused, proving that property rights for women were conditional and subordinate to patriarchal rule.",
+                primary: [
+                    { desc: "Demand for Voyce", coll: "Governor and Council", id: "MSA 1701-4" },
+                    { desc: "Cattle Sale Records", coll: "Maryland Archives", id: "MSA S1071-4" }
+                ],
+                secondary: "Scholarship frames this demand as a confrontation between English property law and colonial gender norms. It highlights the unique legal position of sole women who possessed property but lacked the franchise.",
+                analysis: "The rejection represented an assertive codification of exclusion. The colonial government established a precedent that prioritized biological sex over merit and economic contribution. This ensured political power remained a male prerogative regardless of female capability.",
+                modern: "The Brent legacy persists in the District of Columbia statehood movement. Her demand for representation over a century before the Revolution serves as a foundational milestone for feminist legal theory."
+            },
+            {
+                id: "1662",
+                year: "1662",
+                title: "Hereditary Capital",
+                img: "https://i.postimg.cc/zvwLGZWg/2-From-Pater-Familias-to-Perpetual-Bondage.jpg",
+                summary: "The Virginia House of Burgesses mandated that child status follows the mother. This departure from English law transformed the biological status of enslaved women into a mechanism for self-sustaining labor and capital.",
+                bio: "Elizabeth Key Grinstead won her freedom in 1656 by arguing that status followed the father under common law. Her victory prompted the 1662 legislation intended to permanently close this pathway to freedom for children of color.",
+                detailed: "Partus sequitur ventrem was a strategic economic pivot. By reversing the tradition where status followed the father, the law ensured that children born to enslaved mothers were born into bondage. This created a hereditary engine of capital for white enslavers and codified a permanent racial hierarchy.",
+                primary: [
+                    { desc: "Virginia Act XII", coll: "Statutes at Large", id: "Dec 1662" }
+                ],
+                secondary: "Legal historians analyze how this created a uniquely American form of chattel slavery. Works by Kathleen Brown explore how gender and race were weaponized to sustain the plantation economy.",
+                analysis: "This framework hardwired the exploitation of Black bodies into America's economic foundation. It established a lineage of property that enriched white heirs while ensuring generations of African-descended people remained commodified assets.",
+                modern: "The residue of this era is visible in modern maternal health disparities. Black women face mortality rates nearly four times higher than white women, reflecting a systemic devaluation of their bodily autonomy rooted in colonial law.",
+                chart: { type: 'bar', title: 'Maternal Mortality Ratio (per 100k)', labels: ['White', 'Black'], data: [14.5, 49.4] }
+            },
+            {
+                id: "1869",
+                year: "1869",
+                title: "Schismatic Split",
+                img: "https://i.postimg.cc/pVQy8v9c/3-Schizmatic-Suffragists.jpg",
+                summary: "The movement fractured when the 15th Amendment granted voting rights to Black men while excluding women. White suffrage leaders used racist rhetoric to argue for their own enfranchisement first, creating deep racial fault lines.",
+                bio: "Elizabeth Cady Stanton and Susan B. Anthony prioritized white female suffrage over universal rights. They were challenged by Harper and Douglass, who argued that Black male suffrage was a matter of physical survival during Reconstruction.",
+                detailed: "The 1869 schism split the movement into rival organizations. The NWSA refused to support any amendment that did not include women. Their strategy included forming alliances with white supremacists to argue that educated white women were more deserving of the vote than formerly enslaved men.",
+                primary: [
+                    { desc: "Proceedings of AERA", coll: "Library of Congress", id: "May 1869" }
+                ],
+                secondary: "Martha Jones and Rosalyn Terborg-Penn document the erasure of Black women from this era's mainstream narrative. They analyze how the split entrenched racial hierarchies within the feminist movement.",
+                analysis: "The prioritization of corporate rights over human liberty is also evident in this era. Between 1868 and 1912, the Supreme Court heard over 300 cases regarding corporate property and only 28 regarding African American rights.",
+                modern: "Turnout disparities and modern voter suppression tactics reflect the enduring legacy of this exclusion. The myth of a unified female voting bloc continues to ignore these deep historical and racial divisions.",
+                chart: { type: 'bar', title: 'Supreme Court Cases (1868-1912)', labels: ['Corporate', 'African American'], data: [312, 28] }
+            },
+            {
+                id: "1870",
+                year: "1870",
+                title: "Utah Gambit",
+                img: "https://i.postimg.cc/sgMVnCXS/6-utah-s-u-turn-for-polygamy.png",
+                summary: "Utah granted women the vote as a tactical shield for polygamy against federal interference. When women supported the church rather than dismantling it, the federal government summarily stripped their rights away in 1887.",
+                bio: "Brigham Young and LDS leaders enfranchised Mormon women to double their electoral base. They recognized that a unified voting bloc could protect regional customs from federal prosecution.",
+                detailed: "The Utah Gambit proves that rights granted for political expediency are fundamentally conditional. Suffrage was a defensive tool used by the territory. The federal Edmunds-Tucker Act of 1887 revoked these rights to break the political power of the LDS church, proving liberties can be withdrawn at will.",
+                primary: [
+                    { desc: "Utah Territorial Act", coll: "State Archives", id: "1870 Feb 12" },
+                    { desc: "Edmunds-Tucker Act", coll: "Statutes at Large", id: "24 Stat. 635" }
+                ],
+                secondary: "Sarah Barringer Gordon analyzes the legal warfare between Utah and the federal government. Scholars examine how the female franchise was weaponized in the national struggle over theocratic rule.",
+                analysis: "When the state grants a right for its own self-preservation, that right remains fragile. Rights in Utah were treated as temporary favors rather than pillars of democracy, subject to the shifting priorities of federal authority.",
+                modern: "This mirrors modern concerns regarding Unitary Executive Theory. Federal authority can be weaponized to dismantle programs and rights based on political rivalry, treating the franchise as a transactional asset."
+            },
+            {
+                id: "1917",
+                year: "1917",
+                title: "War on Dissent",
+                img: "https://i.postimg.cc/fb0RbQQN/4-kaiser-wilson.jpg",
+                summary: "Alice Paul and the Silent Sentinels were arrested for picketing the White House during WWI. Their brutal treatment at the Occoquan Workhouse revealed the state's willingness to use violence to silence political dissent.",
+                bio: "Alice Paul led the National Woman's Party with militant tactics learned in Britain. She was force-fed in prison for her refusal to stop picketing the President during wartime, becoming a symbol of the cost of dissent.",
+                detailed: "The Espionage Act of 1917 was used to criminalize protest. Suffragists carrying banners comparing President Wilson to the German Emperor were charged with obstructing traffic. The resulting beatings and force-feedings were state-sanctioned efforts to break their political resolve.",
+                primary: [
+                    { desc: "Schenck v. United States", coll: "Supreme Court", id: "249 U.S. 47" }
+                ],
+                secondary: "Legal scholars analyze the clear and present danger test established during this era. Linda Ford documents the transition toward militant tactics and the physical abuse of political prisoners.",
+                analysis: "The government used national security as a pretext to crush political embarrassment. The convictions established legal precedents for the suppression of free expression that have persisted for over a century in American law.",
+                modern: "The 1917 law remains active and is used to prosecute whistleblowers like Snowden and Assange. The tension between security and free expression remains a defining struggle in the modern digital age."
+            },
+            {
+                id: "1919",
+                year: "1919",
+                title: "Dry Victory",
+                img: "https://i.postimg.cc/8cw1Y1MH/5-a-dry-victory.png",
+                summary: "The 18th Amendment was a massive show of female political power via the WCTU. Banning alcohol necessitated the creation of the federal income tax and the expansion of federal law enforcement agencies.",
+                bio: "Frances Willard and the WCTU framed alcohol as the primary threat to domestic safety. As the largest women's organization of the era, they used moral authority as a powerful political lever to transform the state.",
+                detailed: "National Prohibition built the bureaucratic machinery of the modern state. The loss of liquor excise taxes forced the government to rely on income tax for revenue. Local enforcement failures led to the growth of the FBI and the professionalization of surveillance and raids.",
+                primary: [
+                    { desc: "Volstead Act", coll: "U.S. Congress", id: "H.R. 6810" }
+                ],
+                secondary: "Lisa McGirr analyzes how Prohibition fueled the growth of the carceral state. Scholars focus on the birth of federal policing and the shift from excise taxes to a permanent income tax system.",
+                analysis: "The moral authority of women was the catalyst for a fundamental fiscal and legal transformation of the government. Techniques developed for enforcement became standard tools for the modern state's control of private behavior.",
+                modern: "The shift to income tax remains the state's core fiscal tool. The expansion of federal law enforcement and modern carceral tactics find their origins in this era's moral crusade."
+            },
+            {
+                id: "1921",
+                year: "1921",
+                title: "Appeasement",
+                img: "https://i.postimg.cc/TP8XCyF9/7-appeasement.jpg",
+                summary: "Congress passed the Sheppard-Towner Act to mollify the newly enfranchised female electorate. Once politicians realized women did not vote as a unified bloc, they allowed the program to die in 1929.",
+                bio: "Julia Lathrop, head of the Children's Bureau, advocated for scientific motherhood and public responsibility for health. She was a veteran of Hull House and the first woman to head a federal bureau.",
+                detailed: "The act was the first federally funded social welfare program. It reduced infant mortality but was opposed by the medical establishment as socialized medicine. Once the political threat of a female bloc vanished, the incentive to fund the program ended.",
+                primary: [
+                    { desc: "Sheppard-Towner Act", coll: "Statutes at Large", id: "42 Stat. 224" }
+                ],
+                secondary: "Historians examine the medicalization of pregnancy and the racialized thinking about families embedded in the act's guidance. It reflects a transition from private charity to state-managed welfare.",
+                analysis: "The rise and fall of the program illustrate the transactional nature of legislative rights. While the act expired, its DNA survived in the Social Security Act of 1935, cementing middle-class white values in federal policy.",
+                modern: "Modern child welfare reforms struggle with the legacy of poverty-related neglect and family separation born from this era's guidance. Rights remain dependent on perceived electoral unity."
+            },
+            {
+                id: "1924",
+                year: "1924",
+                title: "Paper Citizens",
+                img: "https://i.postimg.cc/7htF7bSJ/8-Citizen-act.png",
+                summary: "The Indian Citizenship Act conferred citizenship on all Indigenous peoples, yet states used guardianship laws and literacy tests to block their access to the ballot for decades.",
+                bio: "Indigenous veterans of WWI were primary drivers for the Snyder Act. They demanded the same rights they defended on the battlefield, yet returned to a homeland that actively nullified their status as citizens.",
+                detailed: "States used 'ward of the state' status to label Indigenous individuals incompetent to vote. The acquisition of legal citizenship did not assure agency. Tribal members were forced to litigate for decades to remove infrastructure barriers built to silence them.",
+                primary: [
+                    { desc: "Indian Citizenship Act", coll: "Statutes at Large", id: "43 Stat. 253" }
+                ],
+                secondary: "Scholars analyze the use of state law to bypass federal mandates. Legal barriers in Arizona and New Mexico were particularly high, relying on guardianship status to prevent registration.",
+                analysis: "The Snyder Act reveals the gap between legal status and political agency. Citizenship remained a 'paper' right for many until long after the 19th Amendment, capitalizing on infrastructure disparities and state-level exclusion.",
+                modern: "Suppressive barriers continue through postal address requirements on reservations and bans on ballot collection. Tribes continue to fight in court to protect their political representation a century later."
+            }
+        ];
+
+        let currentChart = null;
+
+        function init() {
+            renderNav();
+        }
+
+        function scrollNav(amt) {
+            document.getElementById('navContainer').scrollBy({ left: amt, behavior: 'smooth' });
+        }
+
+        function renderNav() {
+            const container = document.getElementById('navContainer');
+            container.innerHTML = sections.map((s, i) => `
+                <button onclick="loadSection(${i})" class="nav-item p-4 flex flex-col items-center justify-center border-r border-[#a35c27]/10 focus:outline-none" id="nav-${i}">
+                    <div class="w-full aspect-video mb-3 img-placeholder rounded-sm shadow-xl" style="background-image: url('${s.img}');"></div>
+                    <span class="text-[12px] uppercase tracking-widest text-[#1a0f0a] mb-1">${s.year}</span>
+                    <span class="text-[10px] text-[#4a2c1d] truncate w-full text-center px-2">${s.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function loadSection(index) {
+            const s = sections[index];
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${index}`).classList.add('active');
+
+            const main = document.getElementById('mainDisplay');
+            main.innerHTML = `
+                <div class="fade-in max-w-4xl mx-auto glass-panel p-10 md:p-20 shadow-2xl rounded-sm report-view">
+                    <h2>${s.year}: ${s.title}</h2>
+                    
+                    <div class="image-overlay-container aspect-video mb-6 border border-[#a35c27]/20">
+                        <div class="img-placeholder" style="background-image: url('${s.img}');"></div>
+                    </div>
+
+                    <h4>Event Summary</h4>
+                    <p class="mb-12 text-[#1a0f0a] text-lg leading-relaxed">${s.summary}</p>
+
+                    <h4>Portrait</h4>
+                    <div class="image-overlay-container w-full md:w-96 aspect-square mb-6 border border-[#a35c27]/20">
+                        <div class="img-placeholder bg-stone-800/40 text-stone-400 flex items-center justify-center text-[10px] uppercase">[Portrait Placeholder]</div>
+                    </div>
+
+                    <h4>Bio</h4>
+                    <p class="mb-12 text-[#1a0f0a] text-lg leading-relaxed">${s.bio}</p>
+
+                    <h4>Detailed Event Description</h4>
+                    <p class="mb-12 leading-relaxed text-[#1a0f0a] text-xl">${s.detailed}</p>
+
+                    <h4>Primary Sources</h4>
+                    <div class="mb-12">
+                        <table>
+                            <thead>
+                                <tr><th>Description</th><th>Archive Collection</th><th>Identifier</th></tr>
+                            </thead>
+                            <tbody>
+                                ${s.primary.map(p => `<tr><td>${p.desc}</td><td>${p.coll}</td><td>${p.id}</td></tr>`).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Secondary Sources</h4>
+                    <p class="mb-12 leading-relaxed text-[#1a0f0a] text-lg">${s.secondary}</p>
+
+                    <h4>Analysis</h4>
+                    <p class="mb-16 leading-relaxed text-[#1a0f0a] text-lg">${s.analysis}</p>
+
+                    ${s.chart ? `<div class="chart-container"><canvas id="legacyChart"></canvas></div>` : ''}
+
+                    <hr>
+                    <h4>Modern-Day Ramifications</h4>
+                    <p class="mb-10 leading-relaxed text-[#1a0f0a] text-xl">${s.modern}</p>
+                </div>
+            `;
+
+            if (s.chart) {
+                setTimeout(() => initChart(s.chart), 100);
+            }
+        }
+
+        function initChart(cfg) {
+            const ctx = document.getElementById('legacyChart');
+            if (!ctx) return;
+            if (currentChart) currentChart.destroy();
+            
+            Chart.defaults.color = '#1a0f0a';
+            Chart.defaults.font.family = 'sans-serif';
+            
+            currentChart = new Chart(ctx, {
+                type: cfg.type,
+                data: {
+                    labels: cfg.labels,
+                    datasets: [{ data: cfg.data, backgroundColor: ['#d9c5b2', '#a35c27'], borderWidth: 0 }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false }, 
+                        title: { display: true, text: cfg.title, color: '#1a0f0a', font: { size: 18 } } 
+                    },
+                    scales: { 
+                        y: { beginAtZero: true, grid: { color: 'rgba(163, 92, 39, 0.1)' } }
+                    }
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
